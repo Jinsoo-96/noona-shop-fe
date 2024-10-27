@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -20,6 +20,7 @@ const RegisterPage = () => {
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
   const { registrationError } = useSelector((state) => state.user);
+  const [isSubmitting, setIsSubmitting] = useState(false); // signup버튼 disable state
 
   const register = (event) => {
     event.preventDefault();
@@ -35,8 +36,15 @@ const RegisterPage = () => {
     }
     setPasswordError("");
     setPolicyError(false);
+    setIsSubmitting(true); // form이 submit될시 signup 버튼 disable되게함
     dispatch(registerUser({ name, email, password, navigate }));
   };
+
+  useEffect(() => {
+    if (registrationError) {
+      setIsSubmitting(false);
+    }
+  }, [registrationError]);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -114,8 +122,8 @@ const RegisterPage = () => {
             checked={formData.policy}
           />
         </Form.Group>
-        <Button variant="danger" type="submit">
-          회원가입
+        <Button variant="danger" type="submit" disabled={isSubmitting}>
+          {isSubmitting ? "Signing up..." : "Sign up"}
         </Button>
       </Form>
     </Container>
