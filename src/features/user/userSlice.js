@@ -10,6 +10,8 @@ export const loginWithEmail = createAsyncThunk(
     try {
       const response = await api.post("/auth/login", { email, password });
       // 성공
+      // 토큰값 저장
+      sessionStorage.setItem("token", response.data.token);
       //Loginpage
       return response.data;
     } catch (error) {

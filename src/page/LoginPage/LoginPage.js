@@ -15,15 +15,25 @@ const Login = () => {
   const { user, loginError } = useSelector((state) => state.user);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (loginError) {
+      setIsSubmitting(false); // 로그인 실패시 버튼 다시 active
       dispatch(clearErrors());
     }
   }, [navigate]);
-  const handleLoginWithEmail = (event) => {
+
+  const handleLoginWithEmail = async (event) => {
     event.preventDefault();
-    dispatch(loginWithEmail({ email, password }));
+    setIsSubmitting(true); // 로그인 클릭시 버튼 비활성화
+    try {
+      await dispatch(loginWithEmail({ email, password })).unwrap(); // unwrap잘 모르겠음 ㅠ
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      setIsSubmitting(false); // Re-enable button after login attempt
+    }
   };
 
   const handleGoogleLogin = async (googleData) => {
@@ -62,8 +72,8 @@ const Login = () => {
             />
           </Form.Group>
           <div className="display-space-between login-button-area">
-            <Button variant="danger" type="submit">
-              Login
+            <Button variant="danger" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
             <div>
               아직 계정이 없으세요?<Link to="/register">회원가입 하기</Link>{" "}
