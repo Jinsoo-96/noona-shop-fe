@@ -8,9 +8,8 @@ export const getProductList = createAsyncThunk(
   "products/getProductList",
   async (query, { rejectWithValue }) => {
     try {
-      const response = await api.get("/product");
+      const response = await api.get("/product", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
-      console.log("이거", response);
       return response.data.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
     } catch (error) {
       rejectWithValue(error.error);
