@@ -8,6 +8,7 @@ import {
   clearError,
   createProduct,
   editProduct,
+  getProductList,
 } from "../../../features/product/productSlice";
 
 const InitialFormData = {
@@ -63,7 +64,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     setStock([]);
     setStockError(false);
     dispatch(clearError());
-    await setShowDialog(false);
+    setShowDialog(false);
   };
 
   const handleSubmit = async (event) => {
@@ -79,6 +80,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     if (mode === "new") {
       //새 상품 만들기
       await dispatch(createProduct({ ...formData, stock: totalStock }));
+      // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
+      await dispatch(getProductList({ page: 1 })); // 이거 고민하다가 코드 다 망가질뻔 ㄷ ㄷ
     } else {
       // 상품 수정하기
       await dispatch(
