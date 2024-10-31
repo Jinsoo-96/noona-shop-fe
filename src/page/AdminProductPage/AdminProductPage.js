@@ -53,11 +53,15 @@ const AdminProductPage = () => {
 
   const deleteItem = (id) => {
     //아이템 삭제하가ㅣ
+    dispatch(deleteProduct(id));
   };
 
   const openEditForm = (product) => {
     //edit모드로 설정하고
     // 아이템 수정다이얼로그 열어주기
+    setMode("edit");
+    dispatch(setSelectedProduct(product));
+    setShowDialog(true);
   };
 
   const handleClickNewItem = () => {
@@ -69,6 +73,7 @@ const AdminProductPage = () => {
 
   const handlePageClick = ({ selected }) => {
     //  쿼리에 페이지값 바꿔주기
+    setSearchQuery({ ...searchQuery, page: selected + 1 });
   };
   // searchbox에서 검색어를 읽어온다. => 엔터를 치면 => searchQuery객체가 업데이트가 됨. {name: 스트레이트 팬츠}
   // => searchQuery객체 안에 아이템 기준으로 url을 새로 생성해서 호출 &name=스트레이트+팬츠
@@ -99,8 +104,8 @@ const AdminProductPage = () => {
           nextLabel="next >"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
-          pageCount={100}
-          forcePage={searchQuery.page - 1}
+          pageCount={totalPageNum} // 전체 페이지
+          forcePage={searchQuery.page - 1} // 1페이지면 2임 여긴 한개씩 +1 해야함 {}
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           pageClassName="page-item"

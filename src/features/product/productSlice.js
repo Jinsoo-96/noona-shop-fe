@@ -10,10 +10,10 @@ export const getProductList = createAsyncThunk(
     try {
       const response = await api.get("/product", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
-      console.log(response.data);
-      return response.data.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
+      console.log("여기", response.data);
+      return response.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
     } catch (error) {
-      rejectWithValue(error.error);
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -33,8 +33,9 @@ export const createProduct = createAsyncThunk(
         showToastMessage({ message: "상품 생성 완료", status: "success" })
       );
       // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
-      dispatch(getProductList());
-      return response.data.data;
+      dispatch(getProductList({ page: 1 })); // 이거 고민하다가 코드 다 망가질뻔 ㄷ ㄷ
+      // 무조건 1이여도 상관없는게, 추가한게 맨 위로 보이게 할 것이기 때문
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.error);
     }
@@ -56,6 +57,7 @@ const productSlice = createSlice({
   name: "products",
   initialState: {
     productList: [],
+    filteredList: [], // 초기 상태에 추가
     selectedProduct: null,
     loading: false,
     error: "",
@@ -94,10 +96,8 @@ const productSlice = createSlice({
       })
       .addCase(getProductList.fulfilled, (state, action) => {
         state.loading = false;
-        state.productList = action.payload.sort(
-          // updatedAt 기준으로 내림차순 정렬 (최신이 먼저)
-          (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
-        );
+        state.productList = action.payload.data;
+        state.totalPageNum = action.payload.totalPageNum;
         state.error = "";
       })
       .addCase(getProductList.rejected, (state, action) => {
