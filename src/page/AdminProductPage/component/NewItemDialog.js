@@ -59,6 +59,11 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleClose = () => {
     //모든걸 초기화시키고;
     // 다이얼로그 닫아주기
+    setFormData({ ...InitialFormData });
+    setStock([]);
+    setStockError(false);
+    dispatch(clearError());
+    setShowDialog(false);
   };
 
   const handleSubmit = async (event) => {
@@ -212,14 +217,18 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                       handleSizeChange(event.target.value, index)
                     }
                     required
-                    defaultValue={item[0] ? item[0].toLowerCase() : ""}
+                    value={item[0] ? item[0].toLowerCase() : ""} //defaultValue
                   >
-                    <option value="" disabled selected hidden>
+                    <option
+                      value=""
+                      disabled
+                      hidden // disabled selected hidden
+                    >
                       Please Choose...
                     </option>
                     {SIZE.map((item, index) => (
                       <option
-                        inValid={true}
+                        aria-invalid="true" // 접근성을 위한 대안 inValid={true}
                         value={item.toLowerCase()}
                         disabled={stock.some(
                           (size) => size[0] === item.toLowerCase()
@@ -238,7 +247,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     }
                     type="number"
                     placeholder="number of stock"
-                    value={item[1]}
+                    value={item[1] || ""} // undefined 방지
                     required
                   />
                 </Col>

@@ -10,6 +10,7 @@ export const getProductList = createAsyncThunk(
     try {
       const response = await api.get("/product", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
+      console.log(response.data);
       return response.data.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
     } catch (error) {
       rejectWithValue(error.error);
@@ -31,6 +32,8 @@ export const createProduct = createAsyncThunk(
       dispatch(
         showToastMessage({ message: "상품 생성 완료", status: "success" })
       );
+      // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
+      dispatch(getProductList());
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -91,7 +94,10 @@ const productSlice = createSlice({
       })
       .addCase(getProductList.fulfilled, (state, action) => {
         state.loading = false;
-        state.productList = action.payload;
+        state.productList = action.payload.sort(
+          // updatedAt 기준으로 내림차순 정렬 (최신이 먼저)
+          (a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)
+        );
         state.error = "";
       })
       .addCase(getProductList.rejected, (state, action) => {
