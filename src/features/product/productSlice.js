@@ -29,11 +29,11 @@ export const createProduct = createAsyncThunk(
     try {
       const response = await api.post("/product", formData);
       if (response.status !== 200) throw new Error(response.error);
-      dispatch(
+      await dispatch(
         showToastMessage({ message: "상품 생성 완료", status: "success" })
       );
       // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
-      dispatch(getProductList({ page: 1 })); // 이거 고민하다가 코드 다 망가질뻔 ㄷ ㄷ
+      await dispatch(getProductList({ page: 1 })); // 이거 고민하다가 코드 다 망가질뻔 ㄷ ㄷ
       // 무조건 1이여도 상관없는게, 추가한게 맨 위로 보이게 할 것이기 때문
       return response.data;
     } catch (error) {
