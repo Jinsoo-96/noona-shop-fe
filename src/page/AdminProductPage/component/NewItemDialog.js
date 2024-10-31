@@ -84,8 +84,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       );
       // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
       if (result.type === "products/createProduct/fulfilled") {
-        await handleClose(); // 다이얼로그 닫기 및 초기화
         await dispatch(getProductList({ page: 1 })); // 목록 로드
+        await handleClose(); // 다이얼로그 닫기 및 초기화
       } // 이거 고민하다가 코드 다 망가질뻔 ㄷ ㄷ
     } else {
       // 상품 수정하기
