@@ -56,14 +56,14 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     }
   }, [showDialog]);
 
-  const handleClose = () => {
+  const handleClose = async () => {
     //모든걸 초기화시키고;
     // 다이얼로그 닫아주기
     setFormData({ ...InitialFormData });
     setStock([]);
     setStockError(false);
     dispatch(clearError());
-    setShowDialog(false);
+    await setShowDialog(false);
   };
 
   const handleSubmit = async (event) => {
