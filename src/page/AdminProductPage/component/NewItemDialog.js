@@ -84,7 +84,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
       );
       // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
       if (result.type === "products/createProduct/fulfilled") {
-        // await dispatch(getProductList({ page: 1 })); // 목록 로드 setSearchQuery를 사용함으로 생략..!
+        await dispatch(getProductList({ page: 1 })); // 목록 로드 setSearchQuery를 사용함으로 생략..!
         //getProductList 이거 쓰면 url 안바뀜
         setSearchQuery({ page: 1 });
         await handleClose(); // 다이얼로그 닫기 및 초기화
@@ -94,7 +94,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
       await dispatch(
         editProduct({ ...formData, stock: totalStock, id: selectedProduct._id })
       );
-      // await dispatch(getProductList({ page: 1 })); // 목록 로드
+      await dispatch(getProductList({ page: 1 })); // 목록 로드
       setSearchQuery({ page: 1 });
       await handleClose(); // 다이얼로그 닫기 및 초기화
     }
