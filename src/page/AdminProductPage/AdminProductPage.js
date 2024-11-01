@@ -121,17 +121,19 @@ const AdminProductPage = () => {
             field="name"
           />
         </div>
-        <Button className="mt-2 mb-2" onClick={handleClickNewItem}>
-          Add New Item +
-        </Button>
+        <div className="d-flex justify-content-between align-items-center mt-0 mb-0">
+          <Button className="mt-2 mb-2" onClick={handleClickNewItem}>
+            Add New Item +
+          </Button>
 
-        <Button
-          variant="outline-secondary"
-          className="position-absolute end-0 mt-2 mb-2"
-          onClick={openTrash}
-        >
-          🗑️ Trash
-        </Button>
+          <Button
+            variant="outline-secondary"
+            className="mt-2 mb-2"
+            onClick={openTrash}
+          >
+            🗑️ Trash
+          </Button>
+        </div>
 
         <ProductTable
           header={tableHeader}
