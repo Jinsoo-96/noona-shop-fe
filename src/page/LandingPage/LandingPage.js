@@ -21,32 +21,32 @@ const LandingPage = () => {
 
   return (
     <Container>
-      {loading && (
+      {loading ? (
         <div className="text-center">
-          <p>Loading products...</p>
           <img
             src="https://thumbnail.10x10.co.kr/webimage/image/basic600/341/B003419123.jpg?cmd=thumb&w=400&h=400&fit=true&ws=false"
             alt="Loading"
           />
         </div>
+      ) : (
+        <Row>
+          {productList.length > 0 ? (
+            productList.map((item) => (
+              <Col md={3} sm={12} key={item._id}>
+                <ProductCard item={item} />
+              </Col>
+            ))
+          ) : (
+            <div className="text-align-center empty-bag">
+              <h2>
+                {name
+                  ? `${name}과 일치한 상품이 없습니다!`
+                  : "등록된 상품이 없습니다!"}
+              </h2>
+            </div>
+          )}
+        </Row>
       )}
-      <Row>
-        {productList.length > 0 ? (
-          productList.map((item) => (
-            <Col md={3} sm={12} key={item._id}>
-              <ProductCard item={item} />
-            </Col>
-          ))
-        ) : (
-          <div className="text-align-center empty-bag">
-            <h2>
-              {name
-                ? `${name}과 일치한 상품이 없습니다!`
-                : "등록된 상품이 없습니다!"}
-            </h2>
-          </div>
-        )}
-      </Row>
     </Container>
   );
 };
