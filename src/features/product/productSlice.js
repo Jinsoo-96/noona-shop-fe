@@ -20,7 +20,15 @@ export const getProductList = createAsyncThunk(
 
 export const getProductDetail = createAsyncThunk(
   "products/getProductDetail",
-  async (id, { rejectWithValue }) => {}
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.get(`/product/${id}`);
+      // console.log("여기입니다", response);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const createProduct = createAsyncThunk(
@@ -89,7 +97,7 @@ export const getDeletedProducts = createAsyncThunk(
     return response.data;
   }
 );
-
+// 휴지통 기능
 export const restoreProduct = createAsyncThunk(
   "products/restoreProduct",
   async (id) => {
@@ -185,6 +193,19 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
         state.success = false;
+      })
+      // 상품 상세
+      .addCase(getProductDetail.pending, (state) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(getProductDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
+      })
+      .addCase(getProductDetail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
       //휴지통
       // .addCase(getProductList.fulfilled, (state, action) => {
