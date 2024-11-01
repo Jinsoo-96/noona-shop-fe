@@ -106,7 +106,7 @@ const AdminProductPage = () => {
 
   const handleRestore = async (id) => {
     await dispatch(restoreProduct(id));
-    await dispatch(getProductList({ page: 1 })); // 복구 후 목록 새로고침
+    await setSearchQuery({ page: 1 }); // 복구 후 목록 새로고침
     await dispatch(getDeletedProducts()); // 삭제된 항목 목록 새로 고침
   };
 
