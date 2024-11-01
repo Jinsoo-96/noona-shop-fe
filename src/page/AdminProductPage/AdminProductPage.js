@@ -170,6 +170,7 @@ const AdminProductPage = () => {
       />
       {/* Trash Modal */}
       <TrashModal
+        header={tableHeader}
         show={showTrashModal}
         onClose={closeTrash}
         deletedItems={deletedItems}
