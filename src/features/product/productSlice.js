@@ -10,7 +10,7 @@ export const getProductList = createAsyncThunk(
     try {
       const response = await api.get("/product", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
-      console.log("여기", response.data);
+      // console.log("여기", response.data);
       return response.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
     } catch (error) {
       return rejectWithValue(error.error);
@@ -162,7 +162,7 @@ const productSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
-        console.log("여기", action.payload);
+        // console.log("여기", action.payload);
         state.productList = state.productList.filter(
           (product) => product._id !== action.payload
         );
