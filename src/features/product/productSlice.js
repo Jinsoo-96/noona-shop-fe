@@ -42,12 +42,62 @@ export const createProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk(
   "products/deleteProduct",
-  async (id, { dispatch, rejectWithValue }) => {}
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/product/${id}`);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({
+          message: "상품 정보가 삭제되었습니다.",
+          status: "info",
+        })
+      );
+      return id; // 굳이 필요한지 모르겠음
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const editProduct = createAsyncThunk(
   "products/editProduct",
-  async ({ id, ...formData }, { dispatch, rejectWithValue }) => {}
+  async ({ id, ...formData }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put(`/product/${id}`, formData);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({
+          message: "상품 정보가 업데이트 되었습니다.",
+          status: "success",
+        })
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+// 휴지통 기능
+export const getDeletedProducts = createAsyncThunk(
+  "products/getDeleted",
+  async () => {
+    const response = await api.get("/product/deleted", {
+      params: { isDeleted: true },
+    });
+    console.log(response.data);
+    return response.data;
+  }
+);
+
+export const restoreProduct = createAsyncThunk(
+  "products/restoreProduct",
+  async (id) => {
+    const response = await api.put(`/product/restore/${id}`, {
+      isDeleted: false,
+    });
+    return response.data;
+  }
 );
 
 // 슬라이스 생성
@@ -55,7 +105,8 @@ const productSlice = createSlice({
   name: "products",
   initialState: {
     productList: [],
-    filteredList: [], // 초기 상태에 추가
+    filteredList: [], // 초기 상태에 추가 -> 잘 모르겠음
+    deletedItems: [], // 삭제된 항목 상태 추가
     selectedProduct: null,
     loading: false,
     error: "",
@@ -76,6 +127,7 @@ const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // 상품 생성
       .addCase(createProduct.pending, (state, action) => {
         state.loading = true;
       })
@@ -89,6 +141,7 @@ const productSlice = createSlice({
         state.error = action.payload;
         state.success = false;
       })
+      // 정보 get
       .addCase(getProductList.pending, (state, action) => {
         state.loading = true;
       })
@@ -101,6 +154,50 @@ const productSlice = createSlice({
       .addCase(getProductList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      // 상품 삭제
+      .addCase(deleteProduct.pending, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log("여기", action.payload);
+        state.productList = state.productList.filter(
+          (product) => product._id !== action.payload
+        );
+        state.success = true;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      //상품 수정
+      .addCase(editProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.success = true;
+        state.error = "";
+      })
+      .addCase(editProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+        state.success = false;
+      })
+      //휴지통
+      // .addCase(getProductList.fulfilled, (state, action) => {
+      //   state.productList = action.payload.data;
+      //   state.totalPageNum = action.payload.totalPageNum;
+      // })
+      .addCase(getDeletedProducts.fulfilled, (state, action) => {
+        state.deletedItems = action.payload.data; // 삭제된 항목 업데이트
+      })
+      .addCase(restoreProduct.fulfilled, (state, action) => {
+        state.deletedItems = state.deletedItems.filter(
+          (item) => item._id !== action.payload._id
+        );
       });
   },
 });

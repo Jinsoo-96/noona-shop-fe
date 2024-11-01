@@ -6,10 +6,14 @@ import ReactPaginate from "react-paginate";
 import SearchBox from "../../common/component/SearchBox";
 import NewItemDialog from "./component/NewItemDialog";
 import ProductTable from "./component/ProductTable";
+// 휴지통 기능
+import TrashModal from "./component/TrashModal"; // 새로 만든 TrashModal 컴포넌트를 임포트
 import {
   getProductList,
   deleteProduct,
   setSelectedProduct,
+  getDeletedProducts,
+  restoreProduct,
 } from "../../features/product/productSlice";
 
 const AdminProductPage = () => {
@@ -51,9 +55,17 @@ const AdminProductPage = () => {
     navigate("?" + query);
   }, [searchQuery]);
 
-  const deleteItem = (id) => {
+  useEffect(() => {
+    // 현재 페이지가 totalPageNum을 초과할 경우 마지막 페이지로 리다이렉트
+    if (searchQuery.page > totalPageNum) {
+      setSearchQuery((prevQuery) => ({ ...prevQuery, page: totalPageNum }));
+    }
+  }, [totalPageNum, searchQuery.page]);
+
+  const deleteItem = async (id) => {
     //아이템 삭제하가ㅣ
-    dispatch(deleteProduct(id));
+    await dispatch(deleteProduct(id)); // await 안했을때 문제 생김
+    dispatch(getProductList({ ...searchQuery }));
   };
 
   const openEditForm = (product) => {
@@ -79,6 +91,25 @@ const AdminProductPage = () => {
   // => searchQuery객체 안에 아이템 기준으로 url을 새로 생성해서 호출 &name=스트레이트+팬츠
   // => url쿼리 읽어오기 => url쿼리 기준으로 BE에 검색조건과 함께 호출한다.
 
+  // 휴지통 기능 만들어보기
+  const { deletedItems } = useSelector((state) => state.product); // Redux에서 삭제된 항목 가져오기
+  const [showTrashModal, setShowTrashModal] = useState(false);
+
+  const openTrash = async () => {
+    setShowTrashModal(true);
+    await dispatch(getDeletedProducts());
+  };
+
+  const closeTrash = () => {
+    setShowTrashModal(false);
+  };
+
+  const handleRestore = async (id) => {
+    await dispatch(restoreProduct(id));
+    await dispatch(getProductList({ page: 1 })); // 복구 후 목록 새로고침
+    await dispatch(getDeletedProducts()); // 삭제된 항목 목록 새로 고침
+  };
+
   return (
     <div className="locate-center">
       <Container>
@@ -92,6 +123,14 @@ const AdminProductPage = () => {
         </div>
         <Button className="mt-2 mb-2" onClick={handleClickNewItem}>
           Add New Item +
+        </Button>
+
+        <Button
+          variant="outline-secondary"
+          className="position-absolute end-0 mt-2 mb-2"
+          onClick={openTrash}
+        >
+          🗑️ Trash
         </Button>
 
         <ProductTable
@@ -127,6 +166,14 @@ const AdminProductPage = () => {
         mode={mode}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
+        setSearchQuery={setSearchQuery}
+      />
+      {/* Trash Modal */}
+      <TrashModal
+        show={showTrashModal}
+        onClose={closeTrash}
+        deletedItems={deletedItems}
+        onRestore={handleRestore}
       />
     </div>
   );

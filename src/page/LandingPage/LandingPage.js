@@ -9,7 +9,7 @@ const LandingPage = () => {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.product.productList || []);
-  const [query] = useSearchParams();
+  const [query, setQuery] = useSearchParams();
   const name = query.get("name");
   useEffect(() => {
     dispatch(
