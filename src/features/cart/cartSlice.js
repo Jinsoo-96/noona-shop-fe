@@ -14,7 +14,29 @@ const initialState = {
 // Async thunk actions
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
-  async ({ id, size }, { rejectWithValue, dispatch }) => {}
+  async ({ id, size }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.post("/cart", { productId: id, size, qty: 1 });
+      console.log("여기요", response);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({
+          message: "카트에 아이템이 추가 되었습니다.",
+          status: "success",
+        })
+      );
+      return response.data.cartItemQty; // TODO -> 손 봐야하는것
+    } catch (error) {
+      dispatch(
+        showToastMessage({
+          message: "카트에 아이템 추가를 실패했습니다.",
+          status: "error",
+        })
+      );
+      console.log("여기", error);
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const getCartList = createAsyncThunk(
@@ -46,7 +68,21 @@ const cartSlice = createSlice({
     },
     // You can still add reducers here for non-async actions if necessary
   },
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(addToCart.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(addToCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+        state.cartItemCount = action.payload; //TODO
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export default cartSlice.reducer;
