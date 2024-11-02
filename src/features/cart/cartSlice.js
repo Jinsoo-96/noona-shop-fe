@@ -29,7 +29,7 @@ export const addToCart = createAsyncThunk(
     } catch (error) {
       dispatch(
         showToastMessage({
-          message: "카트에 아이템 추가를 실패했습니다.",
+          message: error.error,
           status: "error",
         })
       );
