@@ -18,8 +18,9 @@ const CartProductCard = ({ cartList, item }) => {
     dispatch(getCartList());
   };
 
-  const deleteCart = (id) => {
-    dispatch(deleteCartItem(id));
+  const deleteCart = async (id) => {
+    await dispatch(deleteCartItem(id));
+    dispatch(getCartList());
   };
 
   return (
