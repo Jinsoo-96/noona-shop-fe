@@ -6,7 +6,7 @@ import { ColorRing } from "react-loader-spinner";
 import { currencyFormat } from "../../utils/number";
 import "./style/productDetail.style.css";
 import { getProductDetail } from "../../features/product/productSlice";
-import { addToCart } from "../../features/cart/cartSlice";
+import { addToCart, getCartList } from "../../features/cart/cartSlice";
 
 const ProductDetail = () => {
   const dispatch = useDispatch();

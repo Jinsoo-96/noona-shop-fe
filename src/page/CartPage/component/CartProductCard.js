@@ -4,12 +4,18 @@ import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
-import { updateQty, deleteCartItem } from "../../../features/cart/cartSlice";
-const CartProductCard = ({ item }) => {
+import {
+  updateQty,
+  deleteCartItem,
+  getCartList,
+} from "../../../features/cart/cartSlice";
+const CartProductCard = ({ cartList, item }) => {
   const dispatch = useDispatch();
 
-  const handleQtyChange = (id, value) => {
-    dispatch(updateQty({ id, value }));
+  const handleQtyChange = async (id, value) => {
+    await dispatch(updateQty({ id, value }));
+    // updateQty가 완료된 후에만 getCartList 호출
+    dispatch(getCartList());
   };
 
   const deleteCart = (id) => {
