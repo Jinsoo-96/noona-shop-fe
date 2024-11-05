@@ -16,6 +16,7 @@ const AppLayout = ({ children }) => {
   useEffect(() => {
     dispatch(loginWithToken());
   }, []);
+
   useEffect(() => {
     if (user) {
       dispatch(getCartQty());
