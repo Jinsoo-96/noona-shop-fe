@@ -29,16 +29,19 @@ const PaymentPage = () => {
     zip: "",
   });
 
-  useEffect(() => {
-    // 오더번호를 받으면 어디로 갈까?
-  }, [orderNum]);
+  // useEffect(() => {
+  //   // 오더번호를 받으면 어디로 갈까?
+  //   if (orderNum !== "") {
+  //     navigate("/payment/success");
+  //   }
+  // }, [orderNum]);
 
   const { cartList, totalPrice } = useSelector((state) => state.cart);
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // 오더 생성하기
     const { firstName, lastName, contact, address, city, zip } = shipInfo;
-    dispatch(
+    const orderNum = await dispatch(
       createOrder({
         totalPrice,
         shipTo: { address, city, zip },
@@ -52,7 +55,11 @@ const PaymentPage = () => {
           };
         }),
       })
-    );
+    ).unwrap(); // fulfilled 상태일 때 payload를 직접 반환
+    // 오더 생성 후 orderNum이 있으면 페이지 이동
+    if (orderNum) {
+      navigate("/payment/success");
+    }
   };
 
   const handleFormChange = (event) => {
