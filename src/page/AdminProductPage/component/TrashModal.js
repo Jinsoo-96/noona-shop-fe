@@ -8,7 +8,9 @@ const TrashModal = ({ header, show, onClose, deletedItems, onRestore }) => {
       <Modal.Header closeButton>
         <Modal.Title>Trash</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body
+        style={{ maxHeight: "800px", overflowY: "auto", overflowX: "auto" }}
+      >
         <Table striped bordered hover>
           <thead>
             <tr>
