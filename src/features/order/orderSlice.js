@@ -11,6 +11,7 @@ const initialState = {
   error: "",
   loading: false,
   totalPageNum: 1,
+  isOrderButtonDisabled: false, // OrderReceipt 비활성화 여부
 };
 
 // Async thunks
@@ -31,6 +32,20 @@ export const createOrder = createAsyncThunk(
       return response.data.orderNum;
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const checkOrderListStock = createAsyncThunk(
+  "order/checkOrderListStock",
+  async (payload, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.post("/order/check", payload);
+      if (response.status !== 200) throw new Error(response.error);
+
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.error);
     }
   }
@@ -73,6 +88,22 @@ const orderSlice = createSlice({
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(checkOrderListStock.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.isOrderButtonDisabled = false;
+      })
+      .addCase(checkOrderListStock.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+        state.isOrderButtonDisabled = false; // 성공 시 활성화 유지
+        console.log("Stock check fulfilled, button enabled");
+      })
+      .addCase(checkOrderListStock.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Something went wrong";
+        state.isOrderButtonDisabled = true; // 오류 발생 시 비활성화
       });
   },
 });

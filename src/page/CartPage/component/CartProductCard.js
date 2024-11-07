@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 import {
   updateQty,
@@ -10,20 +10,38 @@ import {
   getCartList,
 } from "../../../features/cart/cartSlice";
 import QuantitySelector from "./QuantitySelector"; // 새로 만든 컴포넌트 import
+import { checkOrderListStock } from "../../../features/order/orderSlice";
 
-const CartProductCard = ({ cartList, item }) => {
+const CartProductCard = ({ item }) => {
   const dispatch = useDispatch();
+  const { cartList } = useSelector((state) => state.cart); // 최신 cartList를 가져옴
 
   const handleQtyChange = async (id, value) => {
     await dispatch(updateQty({ id, value }));
     // updateQty가 완료된 후에만 getCartList 호출
-    dispatch(getCartList());
+    await dispatch(getCartList()); // 최신 cartList를 불러옴
   };
 
   const deleteCart = async (id) => {
     await dispatch(deleteCartItem(id));
-    dispatch(getCartList());
+    await dispatch(getCartList()); // 최신 cartList를 불러옴
   };
+
+  // cartList가 변경될 때마다 checkOrderListStock 실행
+  useEffect(() => {
+    if (cartList.length > 0) {
+      dispatch(
+        checkOrderListStock({
+          orderList: cartList.map((item) => ({
+            productId: item.productId._id,
+            price: item.productId.price,
+            qty: item.qty,
+            size: item.size,
+          })),
+        })
+      );
+    }
+  }, [dispatch, cartList]);
 
   const stock = { ...item.productId.stock };
   const stockCount = stock[item.size];

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { currencyFormat } from "../../../utils/number";
 
-const OrderReceipt = ({ cartList, totalPrice }) => {
+const OrderReceipt = ({ cartList, totalPrice, isOrderButtonDisabled }) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -36,6 +36,7 @@ const OrderReceipt = ({ cartList, totalPrice }) => {
           variant="dark"
           className="payment-button"
           onClick={() => navigate("/payment")}
+          disabled={isOrderButtonDisabled} // 비활성화 상태 적용
         >
           결제 계속하기
         </Button>
