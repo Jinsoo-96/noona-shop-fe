@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CartProductCard from "./component/CartProductCard";
 import OrderReceipt from "../PaymentPage/component/OrderReceipt";
@@ -9,12 +9,24 @@ import { getCartList } from "../../features/cart/cartSlice";
 
 const CartPage = () => {
   const dispatch = useDispatch();
-  const { cartList, totalPrice } = useSelector((state) => state.cart);
+  const { cartList, totalPrice, loading } = useSelector((state) => state.cart);
 
   useEffect(() => {
-    //카트리스트 불러오기
+    // 카트리스트 불러오기
     dispatch(getCartList());
   }, [dispatch]);
+
+  if (loading) {
+    // 로딩 중일 때 로딩 스피너 또는 메시지 표시
+    return (
+      <Container className="text-center">
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+        <div>장바구니를 불러오는 중입니다...</div>
+      </Container>
+    );
+  }
 
   return (
     <Container>

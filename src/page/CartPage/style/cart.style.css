@@ -1,44 +1,53 @@
-.product-card-cart{
-    margin-bottom: 10px;
+.product-card-cart {
+  margin-bottom: 10px;
 }
-.qty-dropdown{
-    max-width:400px;
+.qty-dropdown {
+  max-width: 400px;
 }
-.trash-button{
-    background-color: white;
-    border: 1px solid gray;
+.trash-button {
+  background-color: white;
+  border: 1px solid gray;
 }
-.product-card-cart{
-    background-color: ghostwhite;
-    padding:10px;
+.product-card-cart {
+  background-color: ghostwhite;
+  padding: 10px;
 }
-.receipt-container{
-    border: 1px solid gray;
-    padding: 32px 24px;
+.receipt-container {
+  border: 1px solid gray;
+  padding: 32px 24px;
 }
-.receipt-list{
-    list-style-type: none;
-    padding: 0;
-    border-bottom: 1px solid black;
-}
-
-.receipt-list li{
-    padding-bottom: 10px;
+.receipt-list {
+  list-style-type: none;
+  padding: 0;
+  border-bottom: 1px solid black;
 }
 
-.receipt-title{
-    margin-bottom: 20px;
+.receipt-list li {
+  padding-bottom: 10px;
 }
 
-.payment-button{
-   width: 100%;
-   padding: 16px;
-   margin-bottom: 20px;
+.receipt-title {
+  margin-bottom: 20px;
 }
-.text-align-center{
-    text-align: center;
+
+.payment-button {
+  width: 100%;
+  padding: 16px;
+  margin-bottom: 20px;
 }
-.empty-bag{
-    background-color: white;
-    padding: 20px;
+.text-align-center {
+  text-align: center;
+}
+.empty-bag {
+  background-color: white;
+  padding: 20px;
+}
+.qty-text.disabled-input {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ced4da;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  cursor: not-allowed;
+  text-align: right; /* 우측 정렬 */
 }

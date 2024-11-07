@@ -11,6 +11,7 @@ import {
 } from "../../../features/cart/cartSlice";
 const CartProductCard = ({ cartList, item }) => {
   const dispatch = useDispatch();
+  console.log("아이템", item);
 
   const handleQtyChange = async (id, value) => {
     await dispatch(updateQty({ id, value }));
@@ -22,6 +23,9 @@ const CartProductCard = ({ cartList, item }) => {
     await dispatch(deleteCartItem(id));
     dispatch(getCartList());
   };
+
+  const stock = { ...item.productId.stock };
+  const stockCount = stock[item.size];
 
   return (
     <div className="product-card-cart">
@@ -46,16 +50,45 @@ const CartProductCard = ({ cartList, item }) => {
           </div>
           <div>Size: {item.size}</div>
           <div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
+          {stockCount <= 10 ? (
+            <div style={{ color: "red" }}>
+              현재 남은 수량은 {stockCount}개 입니다.
+            </div>
+          ) : (
+            <div style={{ color: "blue" }}>최대 10개 구입 가능합니다.</div>
+          )}
           <div>
-            Quantity:
-            <Form.Select
-              onChange={(event) =>
-                handleQtyChange(item._id, event.target.value)
-              }
-              required
-              defaultValue={item.qty}
-              className="qty-dropdown"
-            >
+            주문수량 : &nbsp;&nbsp;
+            {!stockCount ? (
+              <input
+                type="text"
+                className="qty-text disabled-input"
+                value={`${item.qty}개`} // 선택된 수량 표시
+                readOnly
+              />
+            ) : (
+              <Form.Select
+                onChange={(event) =>
+                  handleQtyChange(item._id, event.target.value)
+                }
+                required
+                defaultValue={item.qty}
+                className="qty-dropdown"
+              >
+                {stockCount <= 10
+                  ? [...Array(stockCount)].map((_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))
+                  : [...Array(10)].map((_, index) => (
+                      <option key={index + 1} value={index + 1}>
+                        {index + 1}
+                      </option>
+                    ))}
+              </Form.Select>
+            )}
+            {/*
               <option value={1}>1</option>
               <option value={2}>2</option>
               <option value={3}>3</option>
@@ -66,7 +99,7 @@ const CartProductCard = ({ cartList, item }) => {
               <option value={8}>8</option>
               <option value={9}>9</option>
               <option value={10}>10</option>
-            </Form.Select>
+              */}
           </div>
         </Col>
       </Row>

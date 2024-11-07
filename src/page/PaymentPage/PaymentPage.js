@@ -41,24 +41,28 @@ const PaymentPage = () => {
     event.preventDefault();
     // 오더 생성하기
     const { firstName, lastName, contact, address, city, zip } = shipInfo;
-    const orderNum = await dispatch(
-      createOrder({
-        totalPrice,
-        shipTo: { address, city, zip },
-        contact: { firstName, lastName, contact },
-        orderList: cartList.map((item) => {
-          return {
-            productId: item.productId._id,
-            price: item.productId.price,
-            qty: item.qty,
-            size: item.size,
-          };
-        }),
-      })
-    ).unwrap(); // fulfilled 상태일 때 payload를 직접 반환
-    // 오더 생성 후 orderNum이 있으면 페이지 이동
-    if (orderNum) {
-      navigate("/payment/success");
+    try {
+      const orderNum = await dispatch(
+        createOrder({
+          totalPrice,
+          shipTo: { address, city, zip },
+          contact: { firstName, lastName, contact },
+          orderList: cartList.map((item) => {
+            return {
+              productId: item.productId._id,
+              price: item.productId.price,
+              qty: item.qty,
+              size: item.size,
+            };
+          }),
+        })
+      ).unwrap(); // fulfilled 상태일 때 payload를 직접 반환
+      // 오더 생성 후 orderNum이 있으면 페이지 이동
+      if (orderNum) {
+        navigate("/payment/success");
+      }
+    } catch (error) {
+      return;
     }
   };
 

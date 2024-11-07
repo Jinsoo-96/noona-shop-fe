@@ -153,11 +153,11 @@ const cartSlice = createSlice({
           0
         );
       })
-      // 수량만 체크
       .addCase(getCartList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
+      // 수량만 체크
       .addCase(getCartQty.pending, (state) => {
         state.loading = true;
       })
