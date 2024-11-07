@@ -3,9 +3,9 @@ import { Form, Modal, Button, Col, Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { ORDER_STATUS } from "../../../constants/order.constants";
 import { currencyFormat } from "../../../utils/number";
-import { updateOrder } from "../../../features/order/orderSlice";
+import { updateOrder, getOrderList } from "../../../features/order/orderSlice";
 
-const OrderDetailDialog = ({ open, handleClose }) => {
+const OrderDetailDialog = ({ searchQuery, open, handleClose }) => {
   const selectedOrder = useSelector((state) => state.order.selectedOrder);
   const [orderStatus, setOrderStatus] = useState(selectedOrder.status);
   const dispatch = useDispatch();
@@ -13,9 +13,14 @@ const OrderDetailDialog = ({ open, handleClose }) => {
   const handleStatusChange = (event) => {
     setOrderStatus(event.target.value);
   };
-  const submitStatus = () => {
-    dispatch(updateOrder({ id: selectedOrder._id, status: orderStatus }));
-    handleClose();
+  const submitStatus = async (event) => {
+    event.preventDefault(); // 기본 동작 방지
+    await dispatch(updateOrder({ id: selectedOrder._id, status: orderStatus }));
+    await handleClose();
+    // 업데이트 후 주문 목록을 새로 불러옵니다.
+    // 현재 페이지를 유지하여 주문 목록을 새로 불러옴
+    const currentPage = searchQuery.page || 1;
+    dispatch(getOrderList({ ...searchQuery, page: currentPage }));
   };
 
   if (!selectedOrder) {

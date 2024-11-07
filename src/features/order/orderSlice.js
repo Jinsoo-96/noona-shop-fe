@@ -91,10 +91,10 @@ export const updateOrder = createAsyncThunk(
 
       if (response.status !== 200) throw new Error(response.error);
 
-      dispatch(showToastMessage("오더 업데이트 완료!", "success"));
-
-      // 업데이트 후 주문 목록을 새로 불러옵니다.
-      dispatch(getOrderList());
+      dispatch({
+        message: "업데이트 완료.",
+        status: "success",
+      });
 
       return response.data; // 성공 시 fulfilled로 반환
     } catch (error) {

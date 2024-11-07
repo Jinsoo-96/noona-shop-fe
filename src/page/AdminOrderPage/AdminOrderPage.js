@@ -101,7 +101,13 @@ const AdminOrderPage = () => {
         />
       </Container>
 
-      {open && <OrderDetailDialog open={open} handleClose={handleClose} />}
+      {open && (
+        <OrderDetailDialog
+          searchQuery={searchQuery}
+          open={open}
+          handleClose={handleClose}
+        />
+      )}
     </div>
   );
 };
