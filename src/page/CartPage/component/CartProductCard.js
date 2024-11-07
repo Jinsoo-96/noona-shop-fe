@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -9,9 +9,10 @@ import {
   deleteCartItem,
   getCartList,
 } from "../../../features/cart/cartSlice";
+import QuantitySelector from "./QuantitySelector"; // 새로 만든 컴포넌트 import
+
 const CartProductCard = ({ cartList, item }) => {
   const dispatch = useDispatch();
-  console.log("아이템", item);
 
   const handleQtyChange = async (id, value) => {
     await dispatch(updateQty({ id, value }));
@@ -26,6 +27,10 @@ const CartProductCard = ({ cartList, item }) => {
 
   const stock = { ...item.productId.stock };
   const stockCount = stock[item.size];
+  const [showDropdown, setShowDropdown] = useState(false);
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev); // 상태 변경
+  };
 
   return (
     <div className="product-card-cart">
@@ -55,7 +60,9 @@ const CartProductCard = ({ cartList, item }) => {
               현재 남은 수량은 {stockCount}개 입니다.
             </div>
           ) : (
-            <div style={{ color: "blue" }}>최대 10개 구입 가능합니다.</div>
+            <div style={{ color: "blue" }}>
+              현재 남은 수량은 {stockCount}개 입니다.
+            </div>
           )}
           <div>
             주문수량 : &nbsp;&nbsp;
@@ -63,30 +70,38 @@ const CartProductCard = ({ cartList, item }) => {
               <input
                 type="text"
                 className="qty-text disabled-input"
-                value={`${item.qty}개`} // 선택된 수량 표시
+                value={`${item.qty}`} // 선택된 수량 표시
                 readOnly
               />
             ) : (
-              <Form.Select
-                onChange={(event) =>
-                  handleQtyChange(item._id, event.target.value)
-                }
-                required
-                defaultValue={item.qty}
-                className="qty-dropdown"
-              >
-                {stockCount <= 10
-                  ? [...Array(stockCount)].map((_, index) => (
-                      <option key={index + 1} value={index + 1}>
-                        {index + 1}
-                      </option>
-                    ))
-                  : [...Array(10)].map((_, index) => (
-                      <option key={index + 1} value={index + 1}>
-                        {index + 1}
-                      </option>
-                    ))}
-              </Form.Select>
+              <QuantitySelector
+                itemQty={item.qty}
+                stockCount={stockCount}
+                onSelectQty={(qty) => handleQtyChange(item._id, qty)}
+                showDropdown={showDropdown}
+                toggleDropdown={toggleDropdown}
+              />
+
+              // <Form.Select
+              //   onChange={(event) =>
+              //     handleQtyChange(item._id, event.target.value)
+              //   }
+              //   required
+              //   defaultValue={item.qty}
+              //   className="qty-dropdown"
+              // >
+              //   {stockCount <= 10
+              //     ? [...Array(stockCount)].map((_, index) => (
+              //         <option key={index + 1} value={index + 1}>
+              //           {index + 1}
+              //         </option>
+              //       ))
+              //     : [...Array(10)].map((_, index) => (
+              //         <option key={index + 1} value={index + 1}>
+              //           {index + 1}
+              //         </option>
+              //       ))}
+              // </Form.Select>
             )}
             {/*
               <option value={1}>1</option>

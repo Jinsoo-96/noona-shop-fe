@@ -51,3 +51,50 @@
   cursor: not-allowed;
   text-align: right; /* 우측 정렬 */
 }
+.quantity-selector {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+.quantity-selector .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  max-height: 150px;
+  overflow-y: auto;
+  display: block;
+}
+
+.qty-text.disabled-input {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ced4da;
+  padding: 0.375rem;
+  width: 60px;
+  text-align: center;
+  border-radius: 5px 0 0 5px;
+}
+
+.dropdown-toggle {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+  border-left: none;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  border-radius: 0 5px 5px 0;
+}
+
+.dropdown-item {
+  padding: 8px 10px; /* 충분한 여백 */
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background-color: #f0f0f0;
+}
