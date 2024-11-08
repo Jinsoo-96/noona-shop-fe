@@ -5,6 +5,7 @@
   border: 1px solid #ddd;
   padding: 15px;
   transition: box-shadow 0.3s ease;
+  text-align: center; /* 카드 내용 가운데 정렬 */
 }
 
 .card:hover {
@@ -17,6 +18,17 @@
   object-fit: contain; /* 이미지가 채우기 */
 }
 
-.card div {
+.card .product-name {
   margin-top: 10px;
+  height: 40px; /* 제품명 높이 고정 */
+  overflow: hidden; /* 텍스트가 길어질 경우 잘리도록 설정 */
+  font-size: 16px; /* 텍스트 크기 설정 */
+  font-weight: bold; /* 강조를 위해 굵게 */
+}
+
+.card .product-price {
+  margin-top: 10px;
+  height: 20px; /* 가격 높이 고정 */
+  font-size: 14px; /* 텍스트 크기 설정 */
+  color: #555; /* 조금 더 부드러운 색상 */
 }
