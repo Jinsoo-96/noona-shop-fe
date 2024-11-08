@@ -12,7 +12,20 @@ export const PRODUCT_EDIT_REQUEST = "PRODUCT_EDIT_REQUEST";
 export const PRODUCT_EDIT_SUCCESS = "PRODUCT_EDIT_SUCCESS";
 export const PRODUCT_EDIT_FAIL = "PRODUCT_EDIT_FAIL";
 export const SET_FILTERED_LIST = "SET_FILTERED_LIST";
-export const CATEGORY = ["Top", "Dress", "Pants"];
+export const CATEGORY = [
+  "모자",
+  "헤어",
+  "성형",
+  "얼굴장식",
+  "눈장식",
+  "귀걸이",
+  "상의",
+  "하의",
+  "신발",
+  "장갑",
+  "망토",
+  "무기",
+];
 export const STATUS = ["active", "disactive"];
 export const SIZE = ["XS", "S", "M", "L", "XL"];
 export const TOGGLE_ITEM_DIALOG = "TOGGLE_ITEM_DIALOG";
