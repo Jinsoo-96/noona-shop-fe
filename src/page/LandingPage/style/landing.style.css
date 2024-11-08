@@ -1,0 +1,36 @@
+.container {
+  width: 100%; /* 전체 너비 사용 */
+  max-width: 1200px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap; /* 화면 크기에 따라 행이 자동으로 나뉨 */
+  justify-content: flex-start; /* 아이템들이 좌측에서부터 정렬되도록 설정 */
+}
+
+.col {
+  flex: 0 0 25%; /* 기본적으로 25% 너비 (한 줄에 4개) */
+  max-width: 25%; /* 최대 너비 고정 */
+  padding: 15px; /* 각 아이템 사이 여백 */
+}
+
+@media (max-width: 768px) {
+  .col {
+    flex: 0 0 50%; /* 작은 화면에서는 50% 너비 (한 줄에 2개) */
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 576px) {
+  .col {
+    flex: 0 0 100%; /* 아주 작은 화면에서는 100% 너비 (한 줄에 1개) */
+    max-width: 100%;
+  }
+}
+
+.empty-bag {
+  text-align: center; /* 빈 가방 메시지 가운데 정렬 */
+  padding: 50px;
+}

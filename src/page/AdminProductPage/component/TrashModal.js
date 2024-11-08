@@ -1,16 +1,16 @@
 import React from "react";
 import { currencyFormat } from "../../../utils/number";
 import { Modal, Button, Table } from "react-bootstrap";
+import "../style/trashModal.style.css";
 
-const TrashModal = ({ header, show, onClose, deletedItems, onRestore }) => {
+const TrashModal = ({ show, onClose, deletedItems, onRestore }) => {
+  const header = ["#", "Sku", "Name", "category", "Image", ""];
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>Trash</Modal.Title>
       </Modal.Header>
-      <Modal.Body
-        style={{ maxHeight: "800px", overflowY: "auto", overflowX: "auto" }}
-      >
+      <Modal.Body className="modal-body-responsive">
         <Table striped bordered hover>
           <thead>
             <tr>
@@ -26,18 +26,16 @@ const TrashModal = ({ header, show, onClose, deletedItems, onRestore }) => {
                   <td>{index + 1}</td> {/* 인덱스 열 */}
                   <td>{item.sku}</td> {/* SKU */}
                   <td>{item.name}</td> {/* 이름 */}
-                  <th>{currencyFormat(item.price)}</th>
+                  <td>{item.category}</td> {/* 카테고리 */}
                   <th>
-                    {Object.keys(item.stock).map((size, index) => (
-                      <div key={index}>
-                        {size}:{item.stock[size]}
-                      </div>
-                    ))}
+                    <img
+                      src={item.image}
+                      width={100}
+                      height={100} // height를 width와 동일하게 설정하여 정사각형 비율 유지
+                      style={{ objectFit: "cover" }} // 이미지가 정사각형 영역을 채우도록 설정
+                      alt="product"
+                    />
                   </th>
-                  <th>
-                    <img src={item.image} width={100} alt="image" />
-                  </th>
-                  <th>{item.status}</th>
                   <td>
                     <Button
                       variant="outline-success"

@@ -1,0 +1,35 @@
+.header-0 {
+  width: 5px;
+}
+
+.header-1 {
+  width: 100px;
+}
+
+.header-2 {
+  width: 150px;
+  min-width: 100px; /* 최소 너비 설정 */
+}
+.header-3 {
+  width: 50px;
+}
+
+.header-4 {
+  width: 100px;
+}
+
+.header-5 {
+  width: 100px;
+}
+
+.header-6 {
+  width: 100px;
+}
+
+.header-7 {
+  width: 100px;
+}
+
+.header-8 {
+  width: 80px;
+}

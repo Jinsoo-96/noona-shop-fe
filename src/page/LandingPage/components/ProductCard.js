@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { currencyFormat } from "../../../utils/number";
+import "./../style/product.style.css";
 
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();

@@ -1,0 +1,22 @@
+/* 파일: ProductCard.css */
+
+.card {
+  cursor: pointer;
+  border: 1px solid #ddd;
+  padding: 15px;
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
+  width: 100%; /* 부모 요소의 너비에 맞춤 */
+  aspect-ratio: 1 / 1; /* 정사각형 비율로 고정 */
+  object-fit: contain; /* 이미지가 채우기 */
+}
+
+.card div {
+  margin-top: 10px;
+}

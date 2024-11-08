@@ -33,6 +33,7 @@ const AdminProductPage = () => {
     "#",
     "Sku",
     "Name",
+    "category",
     "Price",
     "Stock",
     "Image",
@@ -173,7 +174,6 @@ const AdminProductPage = () => {
       />
       {/* Trash Modal */}
       <TrashModal
-        header={tableHeader}
         show={showTrashModal}
         onClose={closeTrash}
         deletedItems={deletedItems}

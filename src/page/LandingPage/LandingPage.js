@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import ProductCard from "./components/ProductCard";
+import SkeletonCard from "./components/SkeletonCard";
 import { Row, Col, Container } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import { getCartList } from "../../features/cart/cartSlice";
+import "./style/landing.style.css";
 
 const LandingPage = () => {
   const dispatch = useDispatch();
@@ -23,17 +25,19 @@ const LandingPage = () => {
   return (
     <Container>
       {loading ? (
-        <div className="text-center">
-          <img
-            src="https://thumbnail.10x10.co.kr/webimage/image/basic600/341/B003419123.jpg?cmd=thumb&w=400&h=400&fit=true&ws=false"
-            alt="Loading"
-          />
-        </div>
+        // 로딩 중일 때 스켈레톤 카드 12개 보여주기
+        <Row className="g-3">
+          {Array.from({ length: 24 }).map((_, index) => (
+            <Col xs={6} md={4} lg={2} key={index}>
+              <SkeletonCard />
+            </Col>
+          ))}
+        </Row>
       ) : (
         <Row>
           {productList.length > 0 ? (
             productList.map((item) => (
-              <Col md={3} sm={12} key={item._id}>
+              <Col xs={6} md={4} lg={2} key={item._id}>
                 <ProductCard item={item} />
               </Col>
             ))

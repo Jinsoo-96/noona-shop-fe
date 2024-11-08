@@ -31,7 +31,15 @@ export const loginWithEmail = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async (token, { rejectWithValue }) => {}
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/login", { token });
+      if (response.status !== 200) throw new Error(response.error);
+      return response.data.user;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
 );
 
 export const logout = () => (dispatch) => {
@@ -135,9 +143,21 @@ const userSlice = createSlice({
       })
       .addCase(loginWithToken.fulfilled, (state, action) => {
         state.user = action.payload.user;
+      })
+      //.addCase(loginWithToken.pending, (state, action) => {}) 처음에 상품을 먼저 보여줄 것이기 때문에 빼줌
+      //.addCase(loginWithToken.rejected, (state, action) => {}) 이것도 필요없다고 하시는데 아직 잘 모르겠다 ㅠㅠ
+      .addCase(loginWithGoogle.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.loginError = null;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.loading = false;
+        state.loginError = action.payload;
       });
-    //.addCase(loginWithToken.pending, (state, action) => {}) 처음에 상품을 먼저 보여줄 것이기 때문에 빼줌
-    //.addCase(loginWithToken.rejected, (state, action) => {}) 이것도 필요없다고 하시는데 아직 잘 모르겠다 ㅠㅠ
   },
 });
 export const { clearErrors } = userSlice.actions;
