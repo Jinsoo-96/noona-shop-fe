@@ -19,14 +19,18 @@ const Navbar = ({ user }) => {
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = [
-    "여성",
-    "Divided",
-    "남성",
-    "신생아/유아",
-    "아동",
-    "H&M HOME",
-    "Sale",
-    "지속가능성",
+    "모자",
+    "헤어",
+    "성형",
+    "얼굴장식",
+    "눈장식",
+    "귀걸이",
+    "상의",
+    "하의",
+    "신발",
+    "장갑",
+    "망토",
+    "무기",
   ];
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
@@ -38,6 +42,11 @@ const Navbar = ({ user }) => {
       navigate(`?name=${event.target.value}`);
     }
   };
+
+  const handleCategoryClick = (category) => {
+    navigate(`/?category=${category}`);
+  };
+
   const handleLogout = () => {
     dispatch(logout());
     dispatch(initialCart());
@@ -133,7 +142,15 @@ const Navbar = ({ user }) => {
         <ul className="menu">
           {menuList.map((menu, index) => (
             <li key={index}>
-              <a href="#">{menu}</a>
+              <a
+                href="#"
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleCategoryClick(menu);
+                }}
+              >
+                {menu}
+              </a>
             </li>
           ))}
         </ul>

@@ -137,23 +137,29 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
     setStock(newStock);
   };
 
+  // const onHandleCategory = (event) => {
+  //   // 카테고리가 이미 추가되어 있으면 제거
+  //   if (formData.category.includes(event.target.value)) {
+  //     const newCategory = formData.category.filter(
+  //       (item) => item !== event.target.value
+  //     );
+  //     setFormData({
+  //       ...formData,
+  //       category: [...newCategory],
+  //     });
+  //   } else {
+  //     // 아니면 새로 추가
+  //     setFormData({
+  //       ...formData,
+  //       category: [...formData.category, event.target.value],
+  //     });
+  //   }
+  // };
   const onHandleCategory = (event) => {
-    // 카테고리가 이미 추가되어 있으면 제거
-    if (formData.category.includes(event.target.value)) {
-      const newCategory = formData.category.filter(
-        (item) => item !== event.target.value
-      );
-      setFormData({
-        ...formData,
-        category: [...newCategory],
-      });
-    } else {
-      // 아니면 새로 추가
-      setFormData({
-        ...formData,
-        category: [...formData.category, event.target.value],
-      });
-    }
+    setFormData({
+      ...formData,
+      category: [event.target.value], // 기존 값과 상관없이 새로운 값으로 덮어쓰기
+    });
   };
 
   const uploadImage = (url) => {
@@ -306,7 +312,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
             <Form.Label>Category</Form.Label>
             <Form.Control
               as="select"
-              multiple
+              // multiple
               onChange={onHandleCategory}
               value={formData.category}
               required

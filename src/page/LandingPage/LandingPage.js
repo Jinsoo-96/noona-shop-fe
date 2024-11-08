@@ -14,10 +14,12 @@ const LandingPage = () => {
   const { productList, loading } = useSelector((state) => state.product || []);
   const [query, setQuery] = useSearchParams();
   const name = query.get("name");
+  const category = query.get("category");
   useEffect(() => {
     dispatch(
       getProductList({
         name,
+        category,
       })
     );
   }, [query]);
