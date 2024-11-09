@@ -260,3 +260,24 @@ body {
   margin-top: 20px;
   margin-right: 20px;
 }
+.navbar-container {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.navbar-container.hidden {
+  transform: translateY(-100%); /* 숨길 때 위로 이동 */
+}
+
+.navbar-container.visible {
+  transform: translateY(0); /* 표시할 때 원래 위치로 이동 */
+}
+
+.content-with-navbar {
+  padding-top: 70px; /* Navbar 높이만큼 여백 설정, 필요시 70px로 조정 */
+}
