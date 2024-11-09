@@ -80,15 +80,19 @@ const Navbar = ({ user }) => {
 
         <div className="side-menu-list" id="menu-list">
           {menuList.map((menu, index) => (
-            <button key={index}>{menu}</button>
+            <button
+              key={index}
+              onClick={() => {
+                handleCategoryClick(menu);
+                setWidth(0);
+              }}
+            >
+              {menu}
+            </button>
           ))}
         </div>
       </div>
-      {user && user.level === "admin" && (
-        <Link to="/admin/product?page=1" className="link-area">
-          Admin page
-        </Link>
-      )}
+
       <div className="nav-header">
         <div className="burger-menu hide">
           <FontAwesomeIcon icon={faBars} onClick={() => setWidth(250)} />
@@ -96,6 +100,15 @@ const Navbar = ({ user }) => {
 
         <div>
           <div className="display-flex">
+            {user && user.level === "admin" && (
+              <Link
+                to="/admin/product?page=1"
+                className="nav-icon"
+                //className="link-area"
+              >
+                Admin page
+              </Link>
+            )}
             {user ? (
               <div onClick={handleLogout} className="nav-icon">
                 <FontAwesomeIcon icon={faUser} />
@@ -134,7 +147,7 @@ const Navbar = ({ user }) => {
       </div>
 
       <div className="nav-logo">
-        <Link to="/">
+        <Link to="/" className="logo-link">
           <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
         </Link>
       </div>
