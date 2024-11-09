@@ -31,10 +31,18 @@ export const loginWithEmail = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async (token, { rejectWithValue }) => {
+  async (token, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.post("/auth/login", { token });
-      if (response.status !== 200) throw new Error(response.error);
+      const response = await api.post("/auth/google", { token });
+      // 성공
+      // 토큰값 저장
+      sessionStorage.setItem("token", response.data.token);
+      dispatch(
+        showToastMessage({
+          message: `${response.data.user.name}님, 쇼핑을 시작해볼까요?`,
+          status: "success",
+        })
+      );
       return response.data.user;
     } catch (error) {
       return rejectWithValue(error.error);
