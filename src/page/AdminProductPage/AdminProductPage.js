@@ -148,7 +148,7 @@ const AdminProductPage = () => {
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={totalPageNum} // 전체 페이지
-          forcePage={Math.max(0, searchQuery.page - 1)} // 최소 0페이지로 보장
+          forcePage={searchQuery.page - 1} // 1페이지면 2임 여긴 한개씩 +1 해야함 {}
           previousLabel="< previous"
           renderOnZeroPageCount={null}
           pageClassName="page-item"
