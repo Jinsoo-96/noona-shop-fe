@@ -10,7 +10,6 @@ export const getProductList = createAsyncThunk(
     try {
       const response = await api.get("/product", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
-      // console.log("여기", response.data);
       return response.data; // 백엔드에서 어떻게 보냈는지 필히 확인하시오!
     } catch (error) {
       return rejectWithValue(error.error);
@@ -23,7 +22,6 @@ export const getProductDetail = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await api.get(`/product/${id}`);
-      // console.log("여기입니다", response);
       return response.data.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -170,7 +168,6 @@ const productSlice = createSlice({
       })
       .addCase(deleteProduct.fulfilled, (state, action) => {
         state.loading = false;
-        // console.log("여기", action.payload);
         state.productList = state.productList.filter(
           (product) => product._id !== action.payload
         );
@@ -208,10 +205,6 @@ const productSlice = createSlice({
         state.error = action.payload;
       })
       //휴지통
-      // .addCase(getProductList.fulfilled, (state, action) => {
-      //   state.productList = action.payload.data;
-      //   state.totalPageNum = action.payload.totalPageNum;
-      // })
       .addCase(getDeletedProducts.fulfilled, (state, action) => {
         state.deletedItems = action.payload.data; // 삭제된 항목 업데이트
       })

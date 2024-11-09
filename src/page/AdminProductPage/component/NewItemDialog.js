@@ -84,9 +84,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
       );
       // 상품 생성 후 상품 목록을 다시 로드하는 액션 실행
       if (result.type === "products/createProduct/fulfilled") {
-        // await dispatch(getProductList({ page: 1 })); // 목록 로드 setSearchQuery를 사용함으로 생략..!
-        //getProductList 이거 쓰면 url 안바뀜
-        // setSearchQuery({ page: 1 });
         const currentPage = searchQuery.page || 1;
         await dispatch(getProductList({ ...searchQuery, page: currentPage }));
         handleClose(); // 다이얼로그 닫기 및 초기화
@@ -96,8 +93,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
       await dispatch(
         editProduct({ ...formData, stock: totalStock, id: selectedProduct._id })
       );
-      // await dispatch(getProductList({ page: 1 })); // 목록 로드
-      // setSearchQuery({ page: 1 });
       const currentPage = searchQuery.page || 1;
       await dispatch(getProductList({ ...searchQuery, page: currentPage }));
       handleClose(); // 다이얼로그 닫기 및 초기화
@@ -141,24 +136,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
     setStock(newStock);
   };
 
-  // const onHandleCategory = (event) => {
-  //   // 카테고리가 이미 추가되어 있으면 제거
-  //   if (formData.category.includes(event.target.value)) {
-  //     const newCategory = formData.category.filter(
-  //       (item) => item !== event.target.value
-  //     );
-  //     setFormData({
-  //       ...formData,
-  //       category: [...newCategory],
-  //     });
-  //   } else {
-  //     // 아니면 새로 추가
-  //     setFormData({
-  //       ...formData,
-  //       category: [...formData.category, event.target.value],
-  //     });
-  //   }
-  // };
   const onHandleCategory = (event) => {
     setFormData({
       ...formData,
@@ -315,9 +292,6 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, searchQuery }) => {
           <Form.Group as={Col} controlId="category">
             <Form.Label>Category</Form.Label>
             <Form.Select
-              // Form.Label
-              // as="select"
-              // multiple
               onChange={onHandleCategory}
               value={formData.category}
               required

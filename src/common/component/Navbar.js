@@ -101,11 +101,7 @@ const Navbar = ({ user }) => {
         <div>
           <div className="display-flex">
             {user && user.level === "admin" && (
-              <Link
-                to="/admin/product?page=1"
-                className="nav-icon"
-                //className="link-area"
-              >
+              <Link to="/admin/product?page=1" className="nav-icon">
                 Admin page
               </Link>
             )}

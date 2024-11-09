@@ -152,8 +152,6 @@ const userSlice = createSlice({
       .addCase(loginWithToken.fulfilled, (state, action) => {
         state.user = action.payload.user;
       })
-      //.addCase(loginWithToken.pending, (state, action) => {}) 처음에 상품을 먼저 보여줄 것이기 때문에 빼줌
-      //.addCase(loginWithToken.rejected, (state, action) => {}) 이것도 필요없다고 하시는데 아직 잘 모르겠다 ㅠㅠ
       .addCase(loginWithGoogle.pending, (state, action) => {
         state.loading = true;
       })

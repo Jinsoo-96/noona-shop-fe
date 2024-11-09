@@ -35,6 +35,7 @@ const PaymentPage = () => {
   //     navigate("/payment/success");
   //   }
   // }, [orderNum]);
+  // handleSubmit 할때만 넘어가게 하려고 useEffect껏음
 
   const { cartList, totalPrice } = useSelector((state) => state.cart);
   const handleSubmit = async (event) => {
