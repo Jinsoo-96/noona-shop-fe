@@ -158,7 +158,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
   const onHandleCategory = (event) => {
     setFormData({
       ...formData,
-      category: [event.target.value], // 기존 값과 상관없이 새로운 값으로 덮어쓰기
+      category: event.target.value, // 기존 값과 상관없이 새로운 값으로 덮어쓰기
     });
   };
 
@@ -310,19 +310,24 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog, setSearchQuery }) => {
 
           <Form.Group as={Col} controlId="category">
             <Form.Label>Category</Form.Label>
-            <Form.Control
-              as="select"
+            <Form.Select
+              // Form.Label
+              // as="select"
               // multiple
               onChange={onHandleCategory}
               value={formData.category}
               required
             >
+              {/* 기본 선택지 추가 */}
+              <option value="" disabled>
+                -- Select a Category --
+              </option>
               {CATEGORY.map((item, idx) => (
                 <option key={idx} value={item.toLowerCase()}>
                   {item}
                 </option>
               ))}
-            </Form.Control>
+            </Form.Select>
           </Form.Group>
 
           <Form.Group as={Col} controlId="status">
