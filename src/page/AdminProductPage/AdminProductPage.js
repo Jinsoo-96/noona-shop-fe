@@ -170,7 +170,7 @@ const AdminProductPage = () => {
         mode={mode}
         showDialog={showDialog}
         setShowDialog={setShowDialog}
-        setSearchQuery={setSearchQuery}
+        searchQuery={searchQuery}
       />
       {/* Trash Modal */}
       <TrashModal
